@@ -6,7 +6,7 @@ class HashTableEntry:
         self.key = key
         self.value = value
         self.next = None
-
+    
 
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
@@ -21,7 +21,8 @@ class HashTable:
     """
 
     def __init__(self, capacity):
-        # Your code here
+        self.capacity = capacity
+        self.data = [None] * capacity
 
 
     def get_num_slots(self):
@@ -34,7 +35,8 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        
+        return len(self.data)
 
 
     def get_load_factor(self):
@@ -62,7 +64,10 @@ class HashTable:
 
         Implement this, and/or FNV-1.
         """
-        # Your code here
+        hash = 5381
+        for i in key:
+            hash = ((hash << 5) + hash) + ord(i)
+            return hash
 
 
     def hash_index(self, key):
@@ -81,9 +86,27 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        slot = self.hash_index(key)
+        #if this slot already exists and has some values
+        
+        if self.data[slot] is not None:
+            #check to see if it is an update
+            for key_value in self.data[slot]:
+            #find it and set to current value
+                if key_value[0] == key:
+                    key_value[1] = value
+                    break
+                else:
+                # just add it to the end
+                    self.data[slot].append([key, value])
 
-
+        else:
+            # if the index is empty  
+            # create a list 
+            self.data[slot] = []
+            #add it
+            self.data[slot].append([key, value])
+           
     def delete(self, key):
         """
         Remove the value stored with the given key.
@@ -92,7 +115,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        self.put(key, None)
 
 
     def get(self, key):
@@ -103,7 +126,20 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        slot = self.hash_index(key)
+        #if value wasn't found return error
+        if self.data[slot] is None:
+            return 
+        
+        else:
+            # loop through data             
+            for key_value in self.data[slot]:
+                # #find the key_value 
+                if key_value[0] == key:
+                    # # return
+                    return key_value[1]
+            #key doesn't exist
+            return 
 
 
     def resize(self, new_capacity):
@@ -113,7 +149,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        
 
 
 

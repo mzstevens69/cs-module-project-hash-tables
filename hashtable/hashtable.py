@@ -7,8 +7,8 @@ class HashTableEntry:
         self.value = value
         self.next = None
     
-    # def __repr__(self):
-    #     return f"{self.key}, {self.value}"
+    def __repr__(self):
+        return f"{self.key}, {self.value}"
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
 
@@ -107,7 +107,7 @@ class HashTable:
             curr = self.data[slot]
         
             while curr.next and curr.key != key:
-                
+            #step through list   
                 curr = curr.next 
             # key exists update curr value    
             if curr.key == key:
@@ -119,7 +119,7 @@ class HashTable:
                 curr.next = HashTableEntry(key, value)
                 
                 self.count += 1
-                
+            #determine if it needs to be resized bigger
                 if self.get_load_factor() > 0.7:
                     self.resize(self.capacity * 2)
         
@@ -139,7 +139,7 @@ class HashTable:
         
         curr = self.data[slot]
         prev = None
-    #cant find key 
+    
     
         while curr is not None and curr.key != key:
         #step through nodes               
@@ -156,7 +156,7 @@ class HashTable:
             else:
                 prev.next = curr.next
             self.count -= 1
-        
+        # resize smaller if it is smaller than 20%
             if self.get_load_factor() < 0.2:
                 
                 if self.capacity > MIN_CAPACITY:
@@ -179,7 +179,7 @@ class HashTable:
         slot = self.hash_index(key)
         
         curr = self.data[slot]
-        #if value wasn't found return error
+        #if value wasn't found return None
         if curr is None:
             return None
         
@@ -197,22 +197,23 @@ class HashTable:
 
         Implement this.
         """
+        #make a spot for old data
         old_data = self.data
-          
+        #set up spot for new data 
         self.capacity = new_capacity
     
         self.data = [None] * new_capacity
         
         curr = None
-        
+        #set old count to var
         old_count = self.count
-             
+        #find spot for old data    
         for data in old_data:
             
             curr = data
             
             while curr is not None:
-                
+            #step through resassigning old_data to new data    
                 self.put(curr.key, curr.value)
                 curr = curr.next
                 

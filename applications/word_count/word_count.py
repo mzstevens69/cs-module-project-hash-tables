@@ -1,7 +1,20 @@
+import string
+
 def word_count(s):
-    # Your code here
-
-
+    
+    words = {}
+    
+    s.translate(None, string.punctuation) 
+    
+    for word in s.split():
+        word = word.lower()
+        if word in words:
+            words[word] += 1
+        else:
+            words[word] = 1
+    
+    items = dict(words.items())
+    print(items)
 
 if __name__ == "__main__":
     print(word_count(""))
